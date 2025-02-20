@@ -1,9 +1,13 @@
+'use client';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Clock, CreditCard, Smartphone } from 'lucide-react';
+import { useGetPost } from '@/queries/auth';
 
 export default function LandingPage() {
+  const { data: postdata } = useGetPost();
+  console.log('postdata', postdata);
   return (
     <div className="flex flex-col min-h-screen">
       <header className="px-4 lg:px-6 h-14 flex items-center">
