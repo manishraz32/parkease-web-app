@@ -7,10 +7,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/ui/icons';
-import { cn } from '@/lib/utils';
+//import { cn } from '@/lib/utils';
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formData , setFormData] = useState({
+     name:"",
+     email:"",
+     password:""
+  })
   const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
@@ -23,16 +28,25 @@ export default function RegisterPage() {
     }, 3000);
   }
 
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target);
+    const{name,value} = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+  };
+
   return (
-    <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+    <div className="relative flex-col justify-center items-center grid lg:grid-cols-2 lg:px-0 lg:max-w-none min-h-screen container">
+      <div className="hidden relative lg:flex flex-col bg-muted p-10 dark:border-r h-full text-white">
         <div className="absolute inset-0 bg-zinc-900">
           <Image
             src="/placeholder.svg?height=800&width=800"
             width={800}
             height={800}
             alt="Authentication"
-            className="block dark:hidden object-cover"
+            className="dark:hidden block object-cover"
           />
           <Image
             src="/placeholder.svg?height=800&width=800"
@@ -42,11 +56,11 @@ export default function RegisterPage() {
             className="hidden dark:block object-cover"
           />
         </div>
-        <div className="relative z-20 flex items-center text-lg font-medium">
-          <Icons.logo className="mr-2 h-6 w-6" />
+        <div className="z-20 relative flex items-center font-medium text-lg">
+          <Icons.logo className="mr-2 w-6 h-6" />
           Your Company
         </div>
-        <div className="relative z-20 mt-auto">
+        <div className="z-20 relative mt-auto">
           <blockquote className="space-y-2">
             <p className="text-lg">
               &ldquo;Joining this platform was the best decision for our
@@ -58,18 +72,18 @@ export default function RegisterPage() {
         </div>
       </div>
       <div className="lg:p-8">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+        <div className="flex flex-col justify-center space-y-6 mx-auto w-full sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
+            <h1 className="font-semibold text-2xl tracking-tight">
               Create an account
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-muted-foreground text-sm">
               Enter your details below to create your account
             </p>
           </div>
           <form onSubmit={onSubmit}>
-            <div className="grid gap-2">
-              <div className="grid gap-1">
+            <div className="gap-2 grid">
+              <div className="gap-1 grid">
                 <Label className="sr-only" htmlFor="name">
                   Name
                 </Label>
@@ -77,13 +91,16 @@ export default function RegisterPage() {
                   id="name"
                   placeholder="Name"
                   type="text"
+                  name="name"
+                  value={formData.name}
                   autoCapitalize="words"
                   autoComplete="name"
                   autoCorrect="off"
+                  onChange={handleInput}
                   disabled={isLoading}
                 />
               </div>
-              <div className="grid gap-1">
+              <div className="gap-1 grid">
                 <Label className="sr-only" htmlFor="email">
                   Email
                 </Label>
@@ -91,13 +108,16 @@ export default function RegisterPage() {
                   id="email"
                   placeholder="name@example.com"
                   type="email"
+                  name="email"
+                  value={formData.email}
                   autoCapitalize="none"
                   autoComplete="email"
                   autoCorrect="off"
+                  onChange={handleInput}
                   disabled={isLoading}
                 />
               </div>
-              <div className="grid gap-1">
+              <div className="gap-1 grid">
                 <Label className="sr-only" htmlFor="password">
                   Password
                 </Label>
@@ -105,60 +125,63 @@ export default function RegisterPage() {
                   id="password"
                   placeholder="Password"
                   type="password"
+                  name="password"
+                  value={formData.password}
                   autoCapitalize="none"
                   autoComplete="new-password"
                   autoCorrect="off"
+                  onChange={handleInput}
                   disabled={isLoading}
                 />
               </div>
               <Button disabled={isLoading}>
                 {isLoading && (
-                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  <Icons.spinner className="mr-2 w-4 h-4 animate-spin" />
                 )}
                 Sign Up
               </Button>
             </div>
           </form>
-          <div className="relative">
+          {/* <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t" />
+              <span className="border-t w-full" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-background px-2 text-muted-foreground">
                 Or continue with
               </span>
             </div>
-          </div>
-          <Button variant="outline" type="button" disabled={isLoading}>
+          </div> */}
+          {/* <Button variant="outline" type="button" disabled={isLoading}>
             {isLoading ? (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              <Icons.spinner className="mr-2 w-4 h-4 animate-spin" />
             ) : (
-              <Icons.gitHub className="mr-2 h-4 w-4" />
+              <Icons.gitHub className="mr-2 w-4 h-4" />
             )}{' '}
             GitHub
-          </Button>
-          <p className="px-8 text-center text-sm text-muted-foreground">
+          </Button> */}
+          <p className="px-8 text-muted-foreground text-sm text-center">
             By clicking continue, you agree to our{' '}
             <a
               href="/terms"
-              className="underline underline-offset-4 hover:text-primary"
+              className="hover:text-primary underline underline-offset-4"
             >
               Terms of Service
             </a>{' '}
             and{' '}
             <a
               href="/privacy"
-              className="underline underline-offset-4 hover:text-primary"
+              className="hover:text-primary underline underline-offset-4"
             >
               Privacy Policy
             </a>
             .
           </p>
-          <p className="px-8 text-center text-sm text-muted-foreground">
+          <p className="px-8 text-muted-foreground text-sm text-center">
             Already have an account?{' '}
             <a
               href="/login"
-              className="underline underline-offset-4 hover:text-primary"
+              className="hover:text-primary underline underline-offset-4"
             >
               Sign In
             </a>
