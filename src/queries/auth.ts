@@ -5,6 +5,7 @@ import {  useMutation, useQuery } from '@tanstack/react-query';
 import { Endpoints } from '@/constants';
 import callAPI from '@/services/useAPI';
 import { toast } from "react-hot-toast";
+import { ReceiptRussianRuble } from 'lucide-react';
 
 
 
@@ -62,6 +63,18 @@ const getPosts = () => {
   return callAPI({ url: Endpoints.POSTS, method: 'GET' });
 };
 
+
+
+const fetchParkingData = async () => {
+  return callAPI({ url: Endpoints.GETPARKING, method: "GET" }); 
+};
+
+export const getParking = () => {
+  return useQuery({
+    queryKey: ["Parking"], 
+    queryFn: fetchParkingData, 
+  });
+};
 
 
 
