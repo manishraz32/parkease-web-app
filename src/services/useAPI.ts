@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import https from 'https';
 
 // import { putRefreshToken } from '@/queries/Auth';
@@ -19,7 +19,7 @@ export const AxiosInstance = axios.create({
 
 // Request Interceptor
 AxiosInstance.interceptors.request.use(
-  (config: AxiosRequestConfig) => {
+  (config: any) => {
     const authSession = localStorageUtil.getItem<{ accessToken: string }>(
       'auth'
     );
@@ -46,6 +46,7 @@ const onTokenRefreshed = (newToken: string) => {
   refreshSubscribers.forEach((callback) => callback(newToken));
   refreshSubscribers = [];
 };
+console.log(onTokenRefreshed);
 
 const addRefreshSubscriber = (callback: (token: string) => void) => {
   refreshSubscribers.push(callback);
@@ -112,14 +113,14 @@ interface APIRequestProps {
   params?: Record<string, any>;
 }
 
-const useAPI = async ({ url, method, headers, ...rest }: APIRequestProps) => {
+const callAPI = async ({ url, method, headers, ...rest }: APIRequestProps) => {
   try {
     const response = await AxiosInstance({ url, method, headers, ...rest });
     return response.data;
   } catch (error: any) {
-    console.error('API Request Error:', error);
+    console.log('API Request Error:', error);
     throw error;
   }
 };
 
-export default useAPI;
+export default callAPI;

@@ -1,18 +1,18 @@
 // Utility functions for localStorage
-const localStorageUtil = {
+const localStorageUtil = { // localStorageUtil ke name se ek object banaye hai
     // Save an item to localStorage
-    setItem: (key: string, value: unknown) => {
-      try {
-        localStorage.setItem(key, JSON.stringify(value));
+    setItem: (key: string, value: unknown) => { // setItem ek call back fution le raha hai jisme key (uername, email ye sab ayeha), value(karishma, kuamri@gmail.com ye sab ayega)
+      try { // try catch ka use error handling ke liye karte hai jab ham call karte hai
+        localStorage.setItem(key, JSON.stringify(value)); // localStrorage me ja kar setItem se set kar denge o key lega or value set kar dega jaise karishma kumari
       } catch (error) {
-        console.error(`Error setting ${key} in localStorage`, error);
+        console.error(`Error setting ${key} in localStorage`, error); // nahi to  use key pe error de dega
       }
     },
   
     // Get an item from localStorage
     getItem: <T>(key: string): T | null => {
       try {
-        const value = localStorage.getItem(key);
+        const value = localStorage.getItem(key); // localStorage.getItem(usename,email )
         return value ? JSON.parse(value) as T : null;
       } catch (error) {
         console.error(`Error getting ${key} from localStorage`, error);

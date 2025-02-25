@@ -1,6 +1,6 @@
 "use client";
 
-import type { Metadata } from "next";
+//import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";

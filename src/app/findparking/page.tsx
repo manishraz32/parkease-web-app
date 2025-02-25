@@ -48,8 +48,8 @@ export default function Home() {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold text-center mb-8">
+    <div className="mx-auto px-4 py-8 container">
+      <h1 className="mb-8 font-bold text-3xl text-center">
         Find Parking Spaces
       </h1>
       <form onSubmit={handleSubmit} className="flex gap-4 mb-8">
@@ -62,11 +62,11 @@ export default function Home() {
         />
         <Button type="submit">Search</Button>
       </form>
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="gap-6 grid md:grid-cols-2 lg:grid-cols-3">
         {parkingSpaces.map((space) => (
           <Card
             key={space.id}
-            className="cursor-pointer hover:shadow-lg transition-shadow"
+            className="hover:shadow-lg transition-shadow cursor-pointer"
           >
             <Link href={`findparking/parking/${space.id}`}>
               <CardHeader>
@@ -74,15 +74,15 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center mb-2">
-                  <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                  <Star className="mr-1 w-5 h-5 text-yellow-400" />
                   <span>{space.rating.toFixed(1)}</span>
                 </div>
                 <div className="flex items-center mb-2">
-                  <MapPin className="w-5 h-5 mr-2" />
+                  <MapPin className="mr-2 w-5 h-5" />
                   <span>{space.place}</span>
                 </div>
                 <div className="flex items-center">
-                  <Phone className="w-5 h-5 mr-2" />
+                  <Phone className="mr-2 w-5 h-5" />
                   <span>{space.phone}</span>
                 </div>
               </CardContent>

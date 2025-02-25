@@ -7,33 +7,42 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/ui/icons';
-//import { cn } from '@/lib/utils';
+import { useRegisterUser } from '@/queries/auth';
 
 export default function RegisterPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [formData , setFormData] = useState({
-     name:"",
-     email:"",
-     password:""
-  })
+  const [showMessage, setShowMessage] = useState<boolean>(false);
+  const [errMessage, setErrMessage] = useState<boolean>(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+  });
+  const { mutate: userMutate } = useRegisterUser();
   const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
-    setIsLoading(true);
+    // setIsLoading(true);
+    userMutate(formData, {
+      onSuccess: (response: any) => {
+        if (response?.data?.success) {
+          setShowMessage(true);
+        } 
+      },
 
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push('/dashboard');
-    }, 3000);
+      onError: (error) => {
+        console.log("Error:", error);
+      },
+    });
   }
 
   const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target);
-    const{name,value} = e.target;
+    const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: value
+      [name]: value,
     });
   };
 
@@ -88,13 +97,13 @@ export default function RegisterPage() {
                   Name
                 </Label>
                 <Input
-                  id="name"
-                  placeholder="Name"
+                  id="username"
+                  placeholder="username"
                   type="text"
-                  name="name"
-                  value={formData.name}
+                  name="username"
+                  value={formData.username}
                   autoCapitalize="words"
-                  autoComplete="name"
+                  autoComplete="username"
                   autoCorrect="off"
                   onChange={handleInput}
                   disabled={isLoading}
@@ -142,6 +151,18 @@ export default function RegisterPage() {
               </Button>
             </div>
           </form>
+
+          {showMessage && (
+            <div className="bg-blue-100 shadow-md p-4 rounded-lg text-blue-800">
+              I have sent it to your mail, please click there.
+            </div>
+          )}
+
+          {errMessage && (
+            <div className="bg-blue-100 shadow-md p-4 rounded-lg text-blue-800">
+              I please chack your email and provide the link.
+            </div>
+          )}
           {/* <div className="relative">
             <div className="absolute inset-0 flex items-center">
               <span className="border-t w-full" />

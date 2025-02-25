@@ -3,11 +3,11 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { MapPin, Clock, CreditCard, Smartphone } from 'lucide-react';
-import { useGetPost } from '@/queries/auth';
+//import { useGetPost } from '@/queries/auth';
 
 export default function LandingPage() {
-  const { data: postdata } = useGetPost();
-  console.log('postdata', postdata);
+  // const { data: postdata } = useGetPost();
+  // console.log('postdata', postdata);
   return (
     <div className="flex flex-col min-h-screen">
       <header className="flex items-center px-4 lg:px-6 h-14">
@@ -17,19 +17,19 @@ export default function LandingPage() {
         </Link>
         <nav className="flex gap-4 sm:gap-6 ml-auto">
           <Link
-            className="font-medium text-sm underline-offset-4 hover:underline"
+            className="font-medium text-sm hover:underline underline-offset-4"
             href="#features"
           >
             Features
           </Link>
           <Link
-            className="font-medium text-sm underline-offset-4 hover:underline"
+            className="font-medium text-sm hover:underline underline-offset-4"
             href="#how-it-works"
           >
             How It Works
           </Link>
           <Link
-            className="font-medium text-sm underline-offset-4 hover:underline"
+            className="font-medium text-sm hover:underline underline-offset-4"
             href="#contact"
           >
             Contact
@@ -44,7 +44,7 @@ export default function LandingPage() {
                 <h1 className="font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl/none tracking-tighter">
                   Find Parking Spots with Ease
                 </h1>
-                <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400">
+                <p className="mx-auto max-w-[700px] text-gray-500 dark:text-gray-400 md:text-xl">
                   Discover and reserve parking spaces in your city with just a
                   few taps. Save time and avoid the hassle of finding parking.
                 </p>
@@ -61,7 +61,7 @@ export default function LandingPage() {
           className="bg-gray-100 dark:bg-gray-800 py-12 md:py-24 lg:py-32 w-full"
         >
           <div className="px-4 md:px-6 container">
-            <h2 className="mb-8 font-bold text-3xl text-center sm:text-4xl md:text-5xl tracking-tighter">
+            <h2 className="mb-8 font-bold text-3xl sm:text-4xl md:text-5xl text-center tracking-tighter">
               Key Features
             </h2>
             <div className="gap-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
@@ -108,7 +108,7 @@ export default function LandingPage() {
         </section>
         <section id="how-it-works" className="py-12 md:py-24 lg:py-32 w-full">
           <div className="px-4 md:px-6 container">
-            <h2 className="mb-8 font-bold text-3xl text-center sm:text-4xl md:text-5xl tracking-tighter">
+            <h2 className="mb-8 font-bold text-3xl sm:text-4xl md:text-5xl text-center tracking-tighter">
               How It Works
             </h2>
             <div className="gap-8 grid grid-cols-1 md:grid-cols-3">
@@ -168,14 +168,14 @@ export default function LandingPage() {
         </section>
       </main>
       <footer className="flex sm:flex-row flex-col items-center gap-2 px-4 md:px-6 py-6 border-t w-full shrink-0">
-        <p className="text-gray-500 text-xs dark:text-gray-400">
+        <p className="text-gray-500 dark:text-gray-400 text-xs">
           © 2024 ParkEase. All rights reserved.
         </p>
         <nav className="flex gap-4 sm:gap-6 sm:ml-auto">
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
+          <Link className="text-xs hover:underline underline-offset-4" href="#">
             Terms of Service
           </Link>
-          <Link className="text-xs underline-offset-4 hover:underline" href="#">
+          <Link className="text-xs hover:underline underline-offset-4" href="#">
             Privacy
           </Link>
         </nav>

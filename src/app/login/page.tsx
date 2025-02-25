@@ -7,23 +7,73 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Icons } from '@/components/ui/icons';
+import { useLoginUser } from '@/queries/auth';
+import localStorageUtil from '@/utils/localStorageHelpers';
+import cookieStorage from '@/utils/cookieStorage';
 //import { cn } from '@/lib/utils';
 
 export default function LoginPage() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [logindata, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
+
+  const { mutate: userMutate } = useLoginUser();
   const router = useRouter();
 
   async function onSubmit(event: React.SyntheticEvent) {
+    console.log(event);
     event.preventDefault();
-    setIsLoading(true);
+    //setIsLoading(true);
+    userMutate(logindata, {
+      onSuccess: (response: any) => {
+        console.log('response', response);
 
-    setTimeout(() => {
-      setIsLoading(false);
-      router.push('/dashboard');
-    }, 3000);
+        if (response?.success && response?.data?.token) {
+          localStorageUtil.setItem('token', response.data.token);
+          const {
+            username,
+            email,
+            role,
+            profilePicture,
+            address,
+            isEmailVerified,
+            parkingSpaces,
+            bookings,
+          } = response.data.user;
+
+          localStorageUtil.setItem('user', {
+            username,
+            email,
+            role,
+            profilePicture,
+            address,
+            isEmailVerified,
+            parkingSpaces,
+            bookings,
+          });
+          
+          cookieStorage.setItem('role', { role }, 7);
+          router.push('/findparking');
+        }
+      },
+    });
   }
 
+  const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e);
+    console.log(e.target);
+    console.log(e.target.name);
+    console.log(e.target.value);
 
+    const { name, value } = e.target;
+
+    setLoginData({
+      ...logindata,
+      [name]: value,
+    });
+  };
 
   return (
     <div className="relative flex-col justify-center items-center grid lg:grid-cols-2 lg:px-0 lg:max-w-none min-h-screen container">
@@ -81,7 +131,9 @@ export default function LoginPage() {
                   autoCapitalize="none"
                   autoComplete="email"
                   autoCorrect="off"
-                  //onChange={handalInput}
+                  name="email"
+                  onChange={handleInput}
+                  value={logindata.email}
                   disabled={isLoading}
                 />
               </div>
@@ -96,14 +148,16 @@ export default function LoginPage() {
                   autoCapitalize="none"
                   autoComplete="current-password"
                   autoCorrect="off"
-                  //onChange={handalInput}
+                  name="password"
+                  onChange={handleInput}
+                  value={logindata.password}
                   disabled={isLoading}
                 />
               </div>
-              <Button disabled={isLoading}>
-                {isLoading && (
+              <Button>
+                {/* {isLoading && (
                   <Icons.spinner className="mr-2 w-4 h-4 animate-spin" />
-                )}
+                )} */}
                 Sign In
               </Button>
             </div>
@@ -122,7 +176,7 @@ export default function LoginPage() {
             {isLoading ? (
               <Icons.spinner className="mr-2 w-4 h-4 animate-spin" />
             ) : (
-              <Icons.gitHub  className="mr-2 w-4 h-4"/>
+              <Icons.gitHub className="mr-2 w-4 h-4" />
             )}{' '}
             GitHub
           </Button>
