@@ -30,5 +30,7 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
 }
 export const config = {
-    matcher: ['/admin/:path*', '/parking-owner/:path*', '/findparking/:path*'], 
+    matcher: ['/admin/:path*','/parking-owner/:path*', '/findparking/:path*'], 
 };
+
+//'/parking-owner/:path*'

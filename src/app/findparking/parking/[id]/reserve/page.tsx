@@ -1,11 +1,15 @@
+
+
 'use client';
 
-import { useState } from 'react';
+import { useState , useEffect} from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useCreateBookingUser } from '@/queries/auth';
+
 import {
   Card,
   CardContent,
@@ -20,49 +24,71 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-// import { toast } from '@/components/ui/use-toast';
 
 export default function ReservationPage() {
-  const params = useParams();
+  const { id: parkingId } = useParams();
+  console.log('parkingId', parkingId);
   const router = useRouter();
-  const id = params.id;
-
+ 
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     phone: '',
     vehicleType: '',
-    licensePlate: '',
     startDate: '',
     startTime: '',
     duration: '',
   });
 
+  const { mutate: userMutate } = useCreateBookingUser();
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSelectChange = (name: string) => (value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically send the reservation data to your backend
-    console.log('Reservation data:', formData);
-    // toast({
-    //   title: "Reservation Submitted",
-    //   description: "Your parking spot has been reserved.",
-    // })
-    alert('reservation completed');
-    // Redirect to a confirmation page or back to the parking space details
-    // router.push(`/parking/${id}`)
+
+    
+    
+    const userData = localStorage.getItem("user");
+    console.log("userData",userData)
+    const bookedBy = userData ? JSON.parse(userData)._id : null;
+    
+    if (!bookedBy) {
+      console.error("User ID not found in localStorage");
+    }
+    const startDateTime = new Date(
+      `${formData.startDate}T${formData.startTime}:00Z`
+    );
+    console.log('startDateTime', startDateTime);
+
+    const bookingData = {
+      ...formData,
+      startDateTime,
+      parkingId,
+      bookedBy,
+    };
+
+    console.log('bookingData', bookingData);
+    userMutate(bookingData);
+    alert('Reservation completed!');
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Link href={`/findparking/parking/${id}`}>
+    <div className="mx-auto px-4 py-8 container">
+      <Link href={`/findparking/parking/${parkingId}`}>
         <Button variant="outline" className="mb-4">
           ← Back to Parking Space
         </Button>
@@ -73,7 +99,7 @@ export default function ReservationPage() {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="gap-4 grid md:grid-cols-2">
               <div>
                 <Label htmlFor="name">Full Name</Label>
                 <Input
@@ -122,16 +148,6 @@ export default function ReservationPage() {
                     <SelectItem value="van">Van</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
-              <div>
-                <Label htmlFor="licensePlate">License Plate</Label>
-                <Input
-                  id="licensePlate"
-                  name="licensePlate"
-                  value={formData.licensePlate}
-                  onChange={handleInputChange}
-                  required
-                />
               </div>
               <div>
                 <Label htmlFor="startDate">Start Date</Label>

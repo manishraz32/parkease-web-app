@@ -2,7 +2,7 @@
 //  eslint-disable @typescript-eslint/no-use-before-define 
 //  eslint-disable react-hooks/rules-of-hooks 
 import {  useMutation, useQuery } from '@tanstack/react-query';
-import { Endpoints } from '@/constants';
+import { Endpoints, QueryKeys } from '@/constants';
 import callAPI from '@/services/useAPI';
 import { toast } from "react-hot-toast";
 import { ReceiptRussianRuble } from 'lucide-react';
@@ -71,16 +71,43 @@ const fetchParkingData = async () => {
 
 export const getParking = () => {
   return useQuery({
-    queryKey: ["Parking"], 
+    queryKey: [QueryKeys.PARKING_DATA], 
     queryFn: fetchParkingData, 
   });
 };
 
+const fetchParkingId = async (id: string) => {
+  return callAPI({ url: `/api/parking/get-parking/${id}`, method: "GET" });
+};
 
 
-export const useGetPost = () => {
+export const getParkingId = (id:string) => {
   return useQuery({
-    queryKey: ['posts'],
-    queryFn: getPosts 
+    queryKey: ["parkingId", id],
+    queryFn: () => fetchParkingId(id),
   });
 };
+
+
+
+// booking api call
+
+
+const CreateBookingUser = async (createBookingData: any) => {
+  return callAPI({ url: Endpoints.CREATEBOOKING, method: 'POST', data: createBookingData})
+}
+
+
+
+export const useCreateBookingUser = () => {
+  return useMutation(
+      {
+          mutationFn: CreateBookingUser,
+          onSuccess: () => {
+          //toast.success("Account created successfully"); 
+          //showMessage(true);
+          },
+          onError: () => {console.log("error")}
+      }
+  );
+}

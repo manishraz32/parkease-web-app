@@ -33,6 +33,7 @@ export default function LoginPage() {
         if (response?.success && response?.data?.token) {
           localStorageUtil.setItem('token', response.data.token);
           const {
+            _id,
             username,
             email,
             role,
@@ -44,6 +45,7 @@ export default function LoginPage() {
           } = response.data.user;
 
           localStorageUtil.setItem('user', {
+            _id,
             username,
             email,
             role,
